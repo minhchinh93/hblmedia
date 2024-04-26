@@ -15,22 +15,32 @@ use Illuminate\Support\Str;
 
 class s3Controller extends Controller
 {
-    //D:\laragon\www\hệt hông test\public\storage\images\0d2t3q0fsvOdLA6yVr6xjsBj2xeUlTTcuybyZxZk.jpg
 
     public function addImage(Request $request, $id)
     {
-
-        foreach ($request->file('image') as $image) {
-            $dataImage = [
-                'product_id' => $id,
-                // 'ImageDetail' => Storage::disk('s3')->put('images', $image),
-                'ImageDetail' => $image->storeAs('images', $name->Sku . '-' . $str),
-            ];
-            ProductDetails::where('id', $id)->create($dataImage);
+     
+        // Kiểm tra xem có tệp hình ảnh được gửi lên không
+        if ($request->hasFile('image')) {
+            // Lặp qua mỗi file hình ảnh được gửi lên
+            foreach ($request->file('image') as $image) {
+                // Tạo tên tệp duy nhất
+                $imageName = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
+                
+                // Lưu trữ tệp vào thư mục public/images
+                // Tạo dữ liệu hình ảnh để lưu vào cơ sở dữ liệu
+                $dataImage = [
+                    'product_id' => $id,
+                    'ImageDetail' =>  $image->storeAs('images', $imageName), // Lưu tên tệp vào cơ sở dữ liệu
+                ];
+    
+                // Tạo bản ghi mới trong bảng ProductDetails
+                ProductDetails::create($dataImage);
+            }
         }
+    
         return redirect()->back();
-
     }
+    
 
     public function addPngDetailsIdea(Request $request, $id)
     {
@@ -69,67 +79,137 @@ class s3Controller extends Controller
         return response()->json(null);
 
     }
+
     // làm lại
+    // public function delete($id)
+    // {
+    //     $ProductPngDetails = ProductPngDetails::where('product_id', $id)->get();
+    //     foreach ($ProductPngDetails as $imageName) {
+    //         $image = $imageName->ImagePngDetail;
+    //         Storage::disk('s3')->delete($image);
+    //     }
+    //     $mocupProduct = mocupProduct::where('product_id', $id)->get();
+    //     foreach ($mocupProduct as $imageName) {
+    //         $image = $imageName->mocup;
+    //         Storage::disk('s3')->delete($image);
+    //     }
+    //     Product::where('id', $id)->delete();
+    //     return redirect()->back();
+
+    // }
     public function delete($id)
-    {
-        $ProductPngDetails = ProductPngDetails::where('product_id', $id)->get();
-        foreach ($ProductPngDetails as $imageName) {
-            $image = $imageName->ImagePngDetail;
-            Storage::disk('s3')->delete($image);
-        }
-        $mocupProduct = mocupProduct::where('product_id', $id)->get();
-        foreach ($mocupProduct as $imageName) {
-            $image = $imageName->mocup;
-            Storage::disk('s3')->delete($image);
-        }
-        Product::where('id', $id)->delete();
-        return redirect()->back();
-
+{
+    // Xóa tệp PNG liên quan đến sản phẩm
+    $productPngDetails = ProductPngDetails::where('product_id', $id)->get();
+    foreach ($productPngDetails as $detail) {
+        $image = $detail->ImagePngDetail;
+        Storage::delete('images/' . $image);
     }
-    public function Edit(Request $request, $id)
-    {
-        if ($request->size != "") {
-            $size = $request->size;
-        } else {
-            $size = null;
-        }
-        $images = "";
-        if ($request->image) {
-            $images = $request->file('image');
-            $data = [
-                'id_type' => $request->type_id,
-                'User_id' => $request->User_id,
-                'id_idea' => Auth::user()->id,
-                'image' => Storage::disk('s3')->put('images', $request->file('image')[0]),
-                'title' => $request->title,
-                'size_id' => $size,
-                'description' => $request->description,
 
-            ];
-            Product::where('id', $id)->update($data);
+    // Xóa tệp mocup liên quan đến sản phẩm
+    $mocupProducts = MocupProduct::where('product_id', $id)->get();
+    foreach ($mocupProducts as $mocup) {
+        $image = $mocup->mocup;
+        Storage::delete('images/' . $image);
+    }
+
+    // Xóa sản phẩm từ cơ sở dữ liệu
+    Product::where('id', $id)->delete();
+
+    // Chuyển hướng người dùng trở lại trang trước
+    return redirect()->back();
+}
+//     public function Edit(Request $request, $id)
+//     {
+//         if ($request->size != "") {
+//             $size = $request->size;
+//         } else {
+//             $size = null;
+//         }
+//         $images = "";
+//         if ($request->image) {
+//             $images = $request->file('image');
+//             $data = [
+//                 'id_type' => $request->type_id,
+//                 'User_id' => $request->User_id,
+//                 'id_idea' => Auth::user()->id,
+//                 'image' => Storage::disk('s3')->put('images', $request->file('image')[0]),
+//                 'title' => $request->title,
+//                 'size_id' => $size,
+//                 'description' => $request->description,
+
+//             ];
+//             Product::where('id', $id)->update($data);
+//             ProductDetails::where('product_id', $id)->delete();
+//             foreach ($request->file('image') as $image) {
+//                 $dataImage = [
+//                     'product_id' => $id,
+//                     'ImageDetail' => Storage::disk('s3')->put('images', $image),
+//                 ];
+//                 ProductDetails::create($dataImage);
+//             }
+//         } else {
+//             $data = [
+//                 'id_type' => $request->type_id,
+//                 'User_id' => $request->User_id,
+//                 'id_idea' => Auth::user()->id,
+//                 // 'image' => $request->file('image')[0]->store('images'),
+//                 'title' => $request->title,
+//                 'size_id' => $size,
+//                 'description' => $request->description,
+
+//             ];
+//             Product::where('id', $id)->update($data);
+//         }
+//         return redirect()->back();
+//     }
+//     use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Storage;
+
+public function edit(Request $request, $id)
+{
+    $size = $request->size ?: null; // Sử dụng toán tử ba ngôi để kiểm tra và gán giá trị cho biến $size
+
+    $images = $request->file('image');
+    if ($images) {
+        $product = Product::find($id);
+        if ($product) {
+            $product->id_type = $request->type_id;
+            $product->User_id = $request->User_id;
+            $product->id_idea = Auth::user()->id;
+            $product->title = $request->title;
+            $product->size_id = $size;
+            $product->description = $request->description;
+
+            // Xóa tất cả các bản ghi ProductDetails liên quan đến sản phẩm
             ProductDetails::where('product_id', $id)->delete();
-            foreach ($request->file('image') as $image) {
-                $dataImage = [
-                    'product_id' => $id,
-                    'ImageDetail' => Storage::disk('s3')->put('images', $image),
-                ];
-                ProductDetails::create($dataImage);
-            }
-        } else {
-            $data = [
-                'id_type' => $request->type_id,
-                'User_id' => $request->User_id,
-                'id_idea' => Auth::user()->id,
-                // 'image' => $request->file('image')[0]->store('images'),
-                'title' => $request->title,
-                'size_id' => $size,
-                'description' => $request->description,
 
-            ];
-            Product::where('id', $id)->update($data);
+            // Lặp qua các hình ảnh được gửi lên và lưu chúng vào thư mục lưu trữ
+            foreach ($images as $image) {
+                $imageName = $image->storeAs('images', $product->Sku . '-' . $product->id_type);
+                // Tạo bản ghi mới trong bảng ProductDetails cho mỗi hình ảnh
+                ProductDetails::create(['product_id' => $id, 'ImageDetail' => $imageName]);
+            }
+
+            // Lưu thông tin sản phẩm vào cơ sở dữ liệu
+            $product->save();
         }
-        return redirect()->back();
+    } else {
+        // Nếu không có hình ảnh được gửi lên, chỉ cập nhật thông tin sản phẩm
+        Product::where('id', $id)->update([
+            'id_type' => $request->type_id,
+            'User_id' => $request->User_id,
+            'id_idea' => Auth::user()->id,
+            'title' => $request->title,
+            'size_id' => $size,
+            'description' => $request->description,
+        ]);
     }
+
+    // Chuyển hướng người dùng trở lại trang trước
+    return redirect()->back();
+}
+
     // public function addIdea(Request $request)
     // {
 

@@ -83,35 +83,86 @@ class s3DesignerController extends Controller
         return redirect()->route('PendingDS');
     }
 
+    // public function deleteMocupAll(Request $request, $id)
+    // {
+    //     $imageNames = mocupProduct::where('product_id', $id)->get();
+    //     foreach ($imageNames as $imageName) {
+    //         $image = $imageName->mocup;
+    //         Storage::disk('s3')->delete($image);
+    //     }
+    //     mocupProduct::where('product_id', $id)->delete();
+    //     return redirect()->back();
+    // }
     public function deleteMocupAll(Request $request, $id)
-    {
-        $imageNames = mocupProduct::where('product_id', $id)->get();
-        foreach ($imageNames as $imageName) {
-            $image = $imageName->mocup;
-            Storage::disk('s3')->delete($image);
-        }
-        mocupProduct::where('product_id', $id)->delete();
-        return redirect()->back();
+{
+    // Lấy tên tệp mocup liên quan đến sản phẩm
+    $imageNames = MocupProduct::where('product_id', $id)->get();
+
+    foreach ($imageNames as $imageName) {
+        $image = $imageName->mocup;
+        // Xóa tệp mocup từ thư mục lưu trữ
+        Storage::delete('images/' . $image);
     }
+
+    // Xóa tất cả các bản ghi mocup liên quan đến sản phẩm
+    MocupProduct::where('product_id', $id)->delete();
+
+    // Chuyển hướng người dùng trở lại trang trước
+    return redirect()->back();
+}
+    // public function deletePngAll(Request $request, $id)
+    // {
+    //     $imageNames = ProductPngDetails::where('product_id', $id)->get();
+    //     foreach ($imageNames as $imageName) {
+    //         $image = $imageName->ImagePngDetail;
+    //         Storage::disk('s3')->delete($image);
+    //     }
+
+    //     ProductPngDetails::where('product_id', $id)->delete();
+    //     return redirect()->back();
+    // }
     public function deletePngAll(Request $request, $id)
-    {
-        $imageNames = ProductPngDetails::where('product_id', $id)->get();
-        foreach ($imageNames as $imageName) {
-            $image = $imageName->ImagePngDetail;
-            Storage::disk('s3')->delete($image);
-        }
+{
+    // Lấy tên tệp PNG liên quan đến sản phẩm
+    $imageNames = ProductPngDetails::where('product_id', $id)->get();
 
-        ProductPngDetails::where('product_id', $id)->delete();
-        return redirect()->back();
+    foreach ($imageNames as $imageName) {
+        $image = $imageName->ImagePngDetail;
+        // Xóa tệp PNG từ thư mục lưu trữ
+        Storage::delete('images/' . $image);
     }
+
+    // Xóa tất cả các bản ghi PNG liên quan đến sản phẩm
+    ProductPngDetails::where('product_id', $id)->delete();
+
+    // Chuyển hướng người dùng trở lại trang trước
+    return redirect()->back();
+}
+    // public function deletemocups($id)
+    // {
+
+    //     $imageName = mocupProduct::find($id)->mocup; // this returns the file name stored in the DB
+    //     Storage::disk('s3')->delete($imageName);
+    //     mocupProduct::where('id', $id)->delete();
+    //     return response()->json(null);
+    // }
     public function deletemocups($id)
-    {
+{
+    // Lấy tên tệp mocup từ cơ sở dữ liệu
+    $imageName = MocupProduct::find($id)->mocup;
 
-        $imageName = mocupProduct::find($id)->mocup; // this returns the file name stored in the DB
-        Storage::disk('s3')->delete($imageName);
-        mocupProduct::where('id', $id)->delete();
-        return response()->json(null);
+    // Kiểm tra xem tên tệp có tồn tại không
+    if ($imageName) {
+        // Xóa tệp mocup từ thư mục lưu trữ
+        Storage::delete('images/' . $imageName);
     }
+
+    // Xóa bản ghi từ cơ sở dữ liệu
+    MocupProduct::where('id', $id)->delete();
+
+    // Trả về phản hồi JSON rỗng
+    return response()->json(null);
+}
     public function deleteProductPngDetails($id)
     {
 
