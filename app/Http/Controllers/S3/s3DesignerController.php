@@ -171,19 +171,41 @@ class s3DesignerController extends Controller
         ProductPngDetails::where('id', $id)->delete();
         return response()->json(null);
     }
+    // public function deleteds($id)
+    // {
+    //     $ProductPngDetails = ProductPngDetails::where('product_id', $id)->get();
+    //     foreach ($ProductPngDetails as $imageName) {
+    //         $image = $imageName->ImagePngDetail;
+    //         Storage::disk('s3')->delete($image);
+    //     }
+    //     $mocupProduct = mocupProduct::where('product_id', $id)->get();
+    //     foreach ($mocupProduct as $imageName) {
+    //         $image = $imageName->mocup;
+    //         Storage::disk('s3')->delete($image);
+    //     }
+    //     Product::where('id', $id)->delete();
+    //     return redirect()->back();
+    // }
     public function deleteds($id)
-    {
-        $ProductPngDetails = ProductPngDetails::where('product_id', $id)->get();
-        foreach ($ProductPngDetails as $imageName) {
-            $image = $imageName->ImagePngDetail;
-            Storage::disk('s3')->delete($image);
-        }
-        $mocupProduct = mocupProduct::where('product_id', $id)->get();
-        foreach ($mocupProduct as $imageName) {
-            $image = $imageName->mocup;
-            Storage::disk('s3')->delete($image);
-        }
-        Product::where('id', $id)->delete();
-        return redirect()->back();
+{
+    // Xóa tất cả các tệp PNG liên quan đến sản phẩm
+    $productPngDetails = ProductPngDetails::where('product_id', $id)->get();
+    foreach ($productPngDetails as $imageName) {
+        $image = $imageName->ImagePngDetail;
+        Storage::delete('images/' . $image);
     }
+
+    // Xóa tất cả các tệp mocup liên quan đến sản phẩm
+    $mocupProducts = MocupProduct::where('product_id', $id)->get();
+    foreach ($mocupProducts as $imageName) {
+        $image = $imageName->mocup;
+        Storage::delete('images/' . $image);
+    }
+
+    // Xóa sản phẩm từ cơ sở dữ liệu
+    Product::where('id', $id)->delete();
+
+    // Chuyển hướng người dùng trở lại trang trước
+    return redirect()->back();
+}
 }
