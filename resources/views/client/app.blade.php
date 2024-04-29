@@ -8,8 +8,8 @@
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
     {{-- <link rel="shortcut icon" href="blob:https://web.telegram.org/d54200bf-9471-486d-8945-0913f944ae09" /> --}}
-    <title>MEDIA - System Mr.Hải</title>
-    <link rel="icon" href="{{ asset('admin/img/Logo.png') }}" type="image/icon type">
+    <title>MEDIA - System by CầnTeam</title>
+    <link rel="icon" href="https://e7.pngegg.com/pngimages/232/686/png-clipart-white-animal-head-illustration-gray-wolf-black-wolf-logo-wolf-miscellaneous-emblem.png" type="image/icon type">
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('admin/css/bootstrap.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -82,10 +82,10 @@
       <!--header start-->
       <header class="header black-bg" style="background:#d48166">
               <div class="sidebar-toggle-box">
-                <div data-placement="right" > <a href="{{ route('dasboa') }}"><img  src="https://prpinkrainstore.com/admin/img/Logo.png" width="55"style="margin-top:-15px;border-radius:30%"></a></div>
+                <div data-placement="right" > <a href="{{ route('dasboa') }}"><img  src="https://e7.pngegg.com/pngimages/232/686/png-clipart-white-animal-head-illustration-gray-wolf-black-wolf-logo-wolf-miscellaneous-emblem.png" width="55"style="margin-top:-15px;border-radius:30%"></a></div>
             </div>
             <!--logo start-->
-            <a href="{{ route('home') }}" class="logo"><b>MEDIA - System Mr.Hải</b></a>
+            <a href="{{ route('home') }}" class="logo"><b>MEDIA - System By CầnTeam</b></a>
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
 
@@ -127,13 +127,13 @@
                      @if (Auth::user()->role==1)
                      <li class="sub-menu" title="DESIGNER">
                         <a class="{{ (request()->is('/Dashboard')) ? 'active' : 'sub-menu' }}" href="{{ route('Dashboard') }}" >
-                            <i class="fa fa-cogs"></i>
+                            <i class="fa fa-cogs"></i>DESIGNER
                         </a>
                     </li>
                      @endif
                   <li class="sub-menu" title="TOOL">
                       <a class="{{ (request()->is('/showTool')) ? 'active' : 'sub-menu' }}" href="{{ route('showtool') }}" >
-                        <i class="fa fa-th"></i>
+                        <i class="fa fa-th"></i>TOOL
                       </a>
                   </li>
                   <li class="sub-menu" title="DOCUMENT">
