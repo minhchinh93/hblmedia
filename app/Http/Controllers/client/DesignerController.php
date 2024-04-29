@@ -256,75 +256,82 @@ class DesignerController extends Controller
     }
     public function addmocups(Request $request, $id)
     {
-        $file = $request->file('image');
-
         foreach ($request->file('image') as $image) {
             $str = $image->getClientOriginalName();
             $filename = str_replace(' ', '-', $str);
+            
+            // Upload image to S3
+            $path = Storage::disk('s3')->put('images', $image);
+    
             $dataImage = [
                 'product_id' => $id,
-                'mocup' => $image->storeAs('images', time() . $filename),
+                'mocup' => $path,
             ];
-            mocupProduct::where('id', $id)->create($dataImage);
+    
+            mocupProduct::create($dataImage);
         }
+    
         Product::where('id', $id)->update(['status' => 3]);
+    
         return redirect()->route('PendingDS');
     }
     public function dasboa()
     {
         return view('client.idea.index');
     }
-
     public function dowloadURL($id)
     {
         $datapngs = ProductPngDetails::where('id', $id)->get();
         $admin = auth()->user()->id;
+        
         if ($admin != 1) {
             $datadowload = [
-                'User_id' => auth::user()->id,
+                'User_id' => auth()->user()->id,
                 'statusAbsolute' => "tải 1 ảnh PNG",
             ];
             checkDowload::create($datadowload);
         }
+    
         foreach ($datapngs as $datapng) {
             $image = $datapng->ImagePngDetail;
-            $filename = str_replace('images/', '', $image);
-            if (Storage::exists($image)) {
-                $UrlImage = 'https://hblmedia.s3.ap-southeast-1.amazonaws.com/' . $image;
-            } else {
-                $UrlImage = asset('/storage/' . $image);
-
-            }
+            $filename = basename($image);
+    
+            // Tạo đường dẫn tạm thời cho ảnh
+            $tempUrl = Storage::disk('s3')->temporaryUrl($image, now()->addMinutes(5));
+    
+            // Tải ảnh về máy chủ
             $tempImage = tempnam(sys_get_temp_dir(), $filename);
-            copy($UrlImage, $tempImage);
+            copy($tempUrl, $tempImage);
+    
+            // Trả về phản hồi để tải ảnh về máy
             return response()->download($tempImage, $filename);
         }
-
     }
     public function dowloadMocupURL($id)
-    {
-        $datapngs = mocupProduct::where('id', $id)->get();
-        $datadowload = [
-            'User_id' => auth::user()->id,
-            'statusAbsolute' => "tải 1 ảnh Mockup",
-        ];
-        checkDowload::create($datadowload);
-        foreach ($datapngs as $datapng) {
-            $image = $datapng->mocup;
-            $filename = str_replace('images/', '', $image);
-            if (Storage::exists($image)) {
-                $UrlImage = 'https://hblmedia.s3.ap-southeast-1.amazonaws.com/' . $image;
-            } else {
-                $UrlImage = asset('/storage/' . $image);
+{
+    $datapngs = mocupProduct::where('id', $id)->get();
 
-            }
-            $tempImage = tempnam(sys_get_temp_dir(), $filename);
+    $datadowload = [
+        'User_id' => auth()->user()->id,
+        'statusAbsolute' => "tải 1 ảnh Mockup",
+    ];
+    checkDowload::create($datadowload);
 
-            copy($UrlImage, $tempImage);
-            return (response()->download($tempImage, $filename));
-        }
+    foreach ($datapngs as $datapng) {
+        $image = $datapng->mocup;
+        $filename = basename($image);
 
+        // Tạo đường dẫn tạm thời cho ảnh
+        $tempUrl = Storage::disk('s3')->temporaryUrl($image, now()->addMinutes(5));
+
+        // Tải ảnh về máy chủ
+        $tempImage = tempnam(sys_get_temp_dir(), $filename);
+        copy($tempUrl, $tempImage);
+
+        // Trả về phản hồi để tải ảnh về máy
+        return response()->download($tempImage, $filename);
     }
+}
 
     // public function dowloadMocupAll($id)
     // {
@@ -361,24 +368,24 @@ class DesignerController extends Controller
     {
         $datapngs = mocupProduct::where('product_id', $id)->get();
         $datadowload = [
-            'User_id' => auth::user()->id,
+            'User_id' => auth()->user()->id,
             'statusAbsolute' => "tải file Mockup",
         ];
         checkDowload::create($datadowload);
         $fileZipName = time() . '.dowloadMockupAll.zip';
-
+    
         // Mảng URL của các ảnh trên S3
         $s3ImageUrls = [];
         foreach ($datapngs as $i => $value) {
-            $s3ImageUrls[] = ('https://hblmedia.s3.ap-southeast-1.amazonaws.com/images/' . basename($value->mocup));
+            $s3ImageUrls[] = 'https://cantim.s3.ap-southeast-2.amazonaws.com/images/' . basename($value->mocup);
         }
-
+    
         // Tạo thư mục tạm để chứa các ảnh đã tải xuống
         $tempFolder = storage_path('app/temp');
         if (!File::exists($tempFolder)) {
             File::makeDirectory($tempFolder);
         }
-
+    
         // Tải xuống và lưu trữ các ảnh tạm thời
         $downloadedImages = [];
         foreach ($s3ImageUrls as $url) {
@@ -387,9 +394,9 @@ class DesignerController extends Controller
             file_put_contents($tempFilePath, file_get_contents($url));
             $downloadedImages[] = $tempFilePath;
         }
-
+    
         // Tạo tệp zip
-        $zipFilePath = storage_path('app/temp/'.$fileZipName.'.zip');
+        $zipFilePath = storage_path('app/temp/' . $fileZipName);
         $zip = new ZipArchive();
         if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
             foreach ($downloadedImages as $imagePath) {
@@ -398,38 +405,53 @@ class DesignerController extends Controller
             }
             $zip->close();
         }
-
+    
         // Xóa các ảnh tạm sau khi đã nén vào tệp zip
         foreach ($downloadedImages as $imagePath) {
             File::delete($imagePath);
         }
-
+    
         // Trả về liên kết tải xuống tệp zip
-        return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        return response()->download($zipFilePath, $fileZipName)->deleteFileAfterSend(true);
     }
     public function dowloadPNGAll($id)
-    {
-        $datapngs = ProductPngDetails::where('product_id', $id)->get();
-        $datadowload = [
-            'User_id' => auth::user()->id,
-            'statusAbsolute' => "tải file PNG",
-        ];
-        checkDowload::create($datadowload);
-        $fileName = time() . 'ProductPngDetails.zip';
+{
+    $datapngs = ProductPngDetails::where('product_id', $id)->get();
+    $datadowload = [
+        'User_id' => auth()->user()->id,
+        'statusAbsolute' => "tải file PNG",
+    ];
+    checkDowload::create($datadowload);
+    $fileName = time() . 'ProductPngDetails.zip';
 
-        $zip = new ZipArchive;
-        if ($zip->open($fileName, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
-            $files = [];
-            foreach ($datapngs as $i => $value) {
-                $files[$i] = ('https://hblmedia.s3.ap-southeast-1.amazonaws.com/images/' . basename($value->ImagePngDetail));
-            }
-            foreach ($files as $file) {
-                $relativeNameInZipFile = basename($file);
-
-                $zip->addFile($file, $relativeNameInZipFile);
-            }
-            $zip->close();
-        }
-        return response()->download($fileName);
+    // Tạo thư mục tạm để chứa các ảnh đã tải xuống
+    $tempFolder = storage_path('app/temp');
+    if (!is_dir($tempFolder)) {
+        mkdir($tempFolder, 0777, true);
     }
+
+    // Tải xuống và lưu trữ các ảnh tạm thời
+    $downloadedImages = [];
+    foreach ($datapngs as $datapng) {
+        $image = $datapng->ImagePngDetail;
+        $filename = basename($image);
+        $tempFilePath = $tempFolder . '/' . $filename;
+        Storage::disk('s3')->download($image, $tempFilePath);
+        $downloadedImages[] = $tempFilePath;
+    }
+
+    // Tạo tệp zip
+    $zipFilePath = $tempFolder . '/' . $fileName;
+    $zip = new ZipArchive();
+    if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
+        foreach ($downloadedImages as $imagePath) {
+            $fileName = basename($imagePath);
+            $zip->addFile($imagePath, $fileName);
+        }
+        $zip->close();
+    }
+
+    // Trả về liên kết tải xuống tệp zip
+    return response()->download($zipFilePath, $fileName)->deleteFileAfterSend(true);
+}
 }

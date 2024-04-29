@@ -175,7 +175,7 @@
                                 </td>
                                 <td><a href="#">{{ $report->created_at ?? null }}</a></td>
                                 @if(count($report->product_details)!=0)
-                                <td data-toggle="modal" data-target="#a{{$report->id}}"><img src="{{asset('/storage/'.$report->product_details[0]->ImageDetail)}}" style="width: 150px; height :150px;  border-radius: 5%;" >
+                                <td data-toggle="modal" data-target="#a{{$report->id}}"><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->product_details[0]->ImageDetail}}" style="width: 150px; height :150px;  border-radius: 5%;" >
                                   @else
                                 <td data-toggle="modal" data-target="#a{{$report->id}}"></td>
                                 @endif
@@ -198,7 +198,7 @@
                                                 <a href="{{ route('deleteImage',[$rep->id]) }}"><span class="label label-info label-mini">xoa</span></a>
                                                 <div class="photo-wrapper">
                                                     <div class="photo" onclick="photoClick({{ $rep->id }})">
-                                                        <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->ImageDetail)}}" alt="" ><img src="{{asset('/storage/'.$rep->ImageDetail)}}"  width="100%"></a>
+                                                        <a class="fancybox" target="_blank" href="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImageDetail}}" alt="" ><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImageDetail}}"  width="100%"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -221,7 +221,7 @@
 
                                   <td data-toggle="modal" data-target="#c{{$report->id}}">
                                     <span class="badge bg-info">{{ count($report->mocups) }}</span>
-                                    <img src="{{asset('/storage/'.$report->mocups[0]->mocup)}}" style="width: 150px; height :150px;  border-radius: 5%;" ></td>
+                                    <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->mocups[0]->mocup}}" style="width: 150px; height :150px;  border-radius: 5%;" ></td>
                                     @else
                                     <td data-toggle="modal" data-target="#c{{$report->id}}"></td>
                                    @endif
@@ -243,7 +243,7 @@
                                             <div class="project">
                                                 <div class="photo-wrapper">
                                                     <div class="photo" onclick="photoMocups({{ $rep->id }})">
-                                                        <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->mocup)}}" alt="" ><img src="{{asset('/storage/'.$rep->mocup)}}"  width="100%"></a>
+                                                        <a class="fancybox" target="_blank" href="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->mocup}}" alt="" ><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->mocup}}"  width="100%"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -260,7 +260,7 @@
                                 <td data-toggle="modal" data-target="#b{{$report->id}}">
                                     @if (count($report->ProductPngDetails)!=0)
                                     <span class="badge bg-info">{{ count($report->ProductPngDetails) }}</span>
-                                    <img src="{{asset('/storage/'.$report->ProductPngDetails[0]->ImagePngDetail ) ?? null }}" style="border-radius: 5%;width: 150px; height :150px"  >
+                                    <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->ProductPngDetails[0]->ImagePngDetail  ?? null }}" style="border-radius: 5%;width: 150px; height :150px"  >
                                     @endif
 
                                 </td>
@@ -285,7 +285,7 @@
                                             <div class="project">
                                                 <div class="photo-wrapper">
                                                     <div class="photo" onclick="photoPng({{ $rep->id }})">
-                                                        <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->ImagePngDetail)}}" alt="" ><img src="{{asset('/storage/'.$rep->ImagePngDetail)}}"  width="100%"></a>
+                                                        <a class="fancybox" target="_blank" href="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImagePngDetail}}" alt="" ><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImagePngDetail}}"  width="100%"></a>
                                                     </div>
                                                 </div>
                                             </div>

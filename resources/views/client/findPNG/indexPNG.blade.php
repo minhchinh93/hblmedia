@@ -46,11 +46,13 @@
             <div class="content-panel pn "  style="display: flex;flex-direction: space-between;border-radius: 10%; ">
                 <div class="media"  style="margin-right:20px">
                 {{-- <img src="{{asset('/storage/'.$show->ImagePngDetail)}}" alt="..."style="max-width:150px;border-radius: 10px;" class="img-thumbnail"> --}}
-                    @if(Storage::exists($show->ImagePngDetail) == 1)
+                    <!-- @if(Storage::exists($show->ImagePngDetail) == 1)
                     <img src="{{'https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$show->ImagePngDetail ?? null }}" style="border-radius: 5%;width: 150px;"  >
                     @else
                     <img src="{{asset('/storage/'.$show->ImagePngDetail?? null)}}" style="width: 150px; border-radius: 5%;" >
-                    @endif
+                    @endif -->
+                    <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$show->ImagePngDetail ?? null }}" style="border-radius: 5%;width: 150px;"  >
+
                 </div>
                 <div class="media-body">
                     <h5 class="mt-0">Designer: {{ $show->name}}</h5>

@@ -30,7 +30,7 @@ user-select: none!important;">
         <div class="col-lg-8 col-md-8 col-sm-8 mb">
             @if($show->video)
             <video width="100%" controls controlsList="nodownload">
-                <source  false src="{{asset('/storage/'.$show->video) ?? null}}" type="video/mp4">
+                <source  false src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$show->video ?? null}}" type="video/mp4">
               Your browser does not support the video tag.
           </video>
           @else
@@ -48,7 +48,7 @@ user-select: none!important;">
     <div oncontextmenu="return false" class="row mt" style="margin:auto;" >
         <div class="card" style="width: 99%;height: 80vh">
             <div class="row mt" style="margin:auto;height: 80vh;">
-                    <iframe frameborder="0" src="{{asset('/storage/'.$show->file) ?? null}}#toolbar=0&navpanes=0&scrollbar=0" width="100%;" height="100%"></iframe>
+                    <iframe frameborder="0" src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$show->file) ?? null}}#toolbar=0&navpanes=0&scrollbar=0" width="100%;" height="100%"></iframe>
             </div>
           </div>
     </div>

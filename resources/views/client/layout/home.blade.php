@@ -30,31 +30,36 @@
                         </div>
                     </div>
            <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <label class="">Designer:</label>
-                    <select class="col-lg-4 form-control " id="cars" name="User_id" required>
+                    <select class="col-lg-3 form-control " id="cars" name="User_id" required>
                         @foreach ($designers as $designer)
                         <option value="{{ $designer->id }}" >{{  $designer->name }}</option>
                         @endforeach
                       </select> <br><br><br>
                     </div>
-                     <div class="col-lg-4">
+                     <div class="col-lg-3">
                          <label class="">Category :</label>
-                        <select class="col-lg-4 form-control " name="type_id" id= "loaiSP" required>
+                        <select class="col-lg-3 form-control " name="type_id" id= "loaiSP" required>
                             <option value="">Chọn</option>
                             @foreach ($type_products as $type_product)
                             <option value="{{$type_product->id}}" >{{  $type_product->name }}</option>
                             @endforeach
                           </select> <br><br><br>
                      </div>
-                     <div class="col-lg-4">
+                     <div class="col-lg-3">
                         <label class="">Size :</label>
-                         <select class="col-lg-4 form-control " name="size" id="size" required>
+                         <select class="col-lg-3 form-control " name="size" id="size" required>
                             <option value="">Không size</option>
                             @foreach ($sizes as $size)
                             <option value="{{ $size->id }}">{{  $size->name }}</option>
                             @endforeach
                           </select><br><br>
+                        </div>
+                        <div class="col-lg-3">
+                        <label class="">Sku :</label>
+                        <input type="text" name="Sku" class="form-control" required>
+
                         </div>
            </div>
                       <hr>
@@ -186,7 +191,7 @@
                                             @else
                                             <img src="{{asset('/storage/'.$report->product_details[0]->ImageDetail)}}" style="width: 150px; border-radius: 5%;" >
                                         @endif -->
-                                        <img src="{{asset('/storage/'.$report->product_details[0]->ImageDetail)}}" style="width: 150px; border-radius: 5%;" >
+                                        <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->product_details[0]->ImageDetail}}" style="width: 150px; border-radius: 5%;" >
                                       @else
                                     <td data-toggle="modal" data-target="#a{{$report->id}}"></td>
                                     @endif
@@ -221,7 +226,9 @@
                                                         @else
                                                         <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->ImageDetail)}}" alt="" ><img src="{{asset('/storage/'.$rep->ImageDetail)}}"  width="100%"></a>
                                                         @endif -->
-                                                        <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->ImageDetail)}}" alt="" ><img src="{{asset('/storage/'.$rep->ImageDetail)}}"  width="100%"></a>
+                                                        <!-- <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->ImageDetail)}}" alt="" ><img src="{{asset('/storage/'.$rep->ImageDetail)}}"  width="100%"></a> -->
+                                                        <a class="fancybox" target="_blank" href="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImageDetail}}" alt="" ><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImageDetail}}"  width="100%"></a>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -248,7 +255,8 @@
                                          @else
                                          <img src="{{asset('/storage/'.$report->mocups[0]->mocup)}}" style="width: 150px;  border-radius: 5%;" >
                                       @endif -->
-                                      <img src="{{asset('/storage/'.$report->mocups[0]->mocup)}}" style="width: 150px;  border-radius: 5%;" >
+                                      <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->mocups[0]->mocup}}" style="width: 150px;  border-radius: 5%;" >
+
 
                                     </td>
                                         @else
@@ -268,7 +276,7 @@
 
                                               @foreach ($report->mocups as $rep)
                                               <div class="project-wrapper">
-                                                <h5  id="myInputs-{{$rep->id}}" onclick="myFunctions({{$rep->id}})">https://hblmedia.s3.ap-southeast-1.amazonaws.com/{{ $rep->mocup }} </h5>
+                                                <h5  id="myInputs-{{$rep->id}}" onclick="myFunctions({{$rep->id}})">https://cantim.s3.ap-southeast-2.amazonaws.com/{{ $rep->mocup }} </h5>
                                                 <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadMocupURL',[$rep->id]) }}">
                                                     <i class="fa-solid fa-circle-down"></i>
                                                 </a>
@@ -280,7 +288,7 @@
                                                         @else
                                                         <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->mocup)}}" alt="" ><img src="{{asset('/storage/'.$rep->mocup)}}"  width="100%"></a>
                                                          @endif -->
-                                                         <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->mocup)}}" alt="" ><img src="{{asset('/storage/'.$rep->mocup)}}"  width="100%"></a>
+                                                         <a class="fancybox" target="_blank" href="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->mocup}}" alt="" ><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->mocup}}"  width="100%"></a>
 
                                                     </div>
                                                     </div>
@@ -304,7 +312,7 @@
                                         @else
                                         <img src="{{asset('/storage/'.$report->ProductPngDetails[0]->ImagePngDetail)}}" style="width: 150px; border-radius: 5%;" >
                                     @endif -->
-                                    <img src="{{asset('/storage/'.$report->ProductPngDetails[0]->ImagePngDetail)}}" style="width: 150px; border-radius: 5%;" >
+                                    <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->ProductPngDetails[0]->ImagePngDetail  ?? null }}" style="border-radius: 5%;width: 150px;"  >
 
                                     </td>
                                         @else
@@ -358,7 +366,7 @@
                                                         </div><!-- /form-panel -->
                                                     </div>
                                                     @endif
-                                                    <h5 id="myInput1-{{$rep->id}}" onclick="myFunction1({{$rep->id}})"> <a href="#">https://hblmedia.s3.ap-southeast-1.amazonaws.com/{{$rep->ImagePngDetail}}</a></h5>
+                                                    <h5 id="myInput1-{{$rep->id}}" onclick="myFunction1({{$rep->id}})"> <a href="#">https://cantim.s3.ap-southeast-2.amazonaws.com/{{$rep->ImagePngDetail}}</a></h5>
                                                     <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadURL',[$rep->id]) }}" >
                                                         <i class="fa-solid fa-circle-down"></i>
                                                     </a>
@@ -371,7 +379,7 @@
                                                         @else
                                                         <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->ImagePngDetail)}}" alt="" ><img src="{{asset('/storage/'.$rep->ImagePngDetail)}}"  width="100%"></a>
                                                         @endif -->
-                                                        <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->ImagePngDetail)}}" alt="" ><img src="{{asset('/storage/'.$rep->ImagePngDetail)}}"  width="100%"></a>
+                                                        <a class="fancybox" target="_blank" href="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImagePngDetail}}" alt="" ><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImagePngDetail}}"  width="100%"></a>
 
 
                                                         </div>

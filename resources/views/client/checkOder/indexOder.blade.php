@@ -56,7 +56,7 @@
         <div class="col-lg-3 col-md-3 col-sm-3 mb">
             <div class="content-panel pn "  style="display: flex;flex-direction: space-between;">
                 <div class="media"  style="margin-right:20px">
-                    <img src="{{asset('/storage/'.$show->ImagePngDetail)}}" alt="..."  height="130px" width="130px" class="img-thumbnail">
+                    <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$show->ImagePngDetail)}}" alt="..."  height="130px" width="130px" class="img-thumbnail">
                 </div>
                 <div class="media-body">
                       <h5 class="mt-0">Designer: {{ $show->name}}</h5>
@@ -80,7 +80,7 @@
         <div class="col-lg-3 col-md-3 col-sm-3 mb">
             <div class="content-panel pn "  style="display: flex;flex-direction: space-between;">
                 <div class="media"  style="margin-right:20px">
-                    <img src="{{asset('/storage/'.$show->ImagePngDetail)}}" alt="..."  height="130px" width="130px" class="img-thumbnail">
+                    <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$show->ImagePngDetail}}" alt="..."  height="130px" width="130px" class="img-thumbnail">
                 </div>
                 <div class="media-body">
                       <h5 class="mt-0">Designer: {{ $show->name}}</h5>
