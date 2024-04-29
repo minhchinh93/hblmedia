@@ -60,26 +60,24 @@ class s3DesignerController extends Controller
     }
     public function addPngDetails(Request $request, $id)
     {
-
-        $file = $request->file('image');
-        $name = Product::where('id', $id)->first();
-        foreach ($file as $image) {
-            $str = $image->getClientOriginalName();
-            $filename = str_replace(' ', '-', $str);
-            // $name = strtoupper(Str::random(8));
-            $filename = str_replace(' ', '-', $str);
+        $files = $request->file('image');
+        $product = Product::findOrFail($id);
+    
+        foreach ($files as $file) {
+            $filename = str_replace(' ', '-', $file->getClientOriginalName());
+            $path = $file->storeAs('images', $product->Sku . '-' . $filename, 's3');
+    
             $dataImage = [
                 'product_id' => $id,
-                'ImagePngDetail' => $image->storeAs('images', $name->Sku . '-' . $filename),
+                'ImagePngDetail' => $path,
+                'Sku' => $product->Sku,
             ];
-            $datapng = ProductPngDetails::where('id', $id)->create($dataImage);
-            $idPNG = $datapng->id;
-
-            ProductPngDetails::where('id', $idPNG)->update([
-                'Sku' => $name->Sku,
-            ]);
+    
+            $datapng = ProductPngDetails::create($dataImage);
         }
+    
         Product::where('id', $id)->update(['status' => 3]);
+    
         return redirect()->route('PendingDS');
     }
 
