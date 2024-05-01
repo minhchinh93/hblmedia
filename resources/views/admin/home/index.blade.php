@@ -416,11 +416,11 @@
     $(document).ready(function() {
         var unique_id = $.gritter.add({
             // (string | mandatory) the heading of the notification
-            title: 'Welcome to Media-Sytem MR.hai !',
+            title: 'Welcome to Media-Sytem By CanTeam !',
             // (string | mandatory) the text inside the notification
             text: 'Chúc bạn 1 ngày làm việc thật vui vẻ năng lượng.',
             // (string | optional) the image to display on the left
-            image: 'http://hblmedia.online/admin/img/Logo.png',
+            image: 'https://png.pngtree.com/png-vector/20210514/ourlarge/pngtree-red-wolf-logo-template-for-esport-team-png-image_3293973.jpg',
             // (bool | optional) if you want it to fade out on its own or just sit there
             sticky: true,
             // (int | optional) the time you want it to be alive for before fading out

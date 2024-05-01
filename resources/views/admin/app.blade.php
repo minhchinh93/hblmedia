@@ -7,8 +7,8 @@
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>MEDIA - System Mr.Hải</title>
-    <link rel="icon" href="{{ asset('admin/img/Logo.png') }}" type="image/icon type">
+    <title>MEDIA - System by Canteam</title>
+    <link rel="icon" href="https://png.pngtree.com/png-vector/20210514/ourlarge/pngtree-red-wolf-logo-template-for-esport-team-png-image_3293973.jpg" type="image/icon type">
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('admin/css/bootstrap.css') }}" rel="stylesheet">
@@ -46,12 +46,12 @@
               <div class="sidebar-toggle-box">
                 <div data-placement="right" >
                     {{-- <a href="{{ route('AadminHome') }}"> --}}
-                    <img  src="https://prpinkrainstore.com/admin/img/Logo.png" width="55"style="margin-top:-15px;border-radius:30%" class=" fa fa-bars tooltips">
+                    <img  src="https://png.pngtree.com/png-vector/20210514/ourlarge/pngtree-red-wolf-logo-template-for-esport-team-png-image_3293973.jpg" width="55"style="margin-top:-15px;border-radius:30%" class=" fa fa-bars tooltips">
                 </a>
             </div>
               </div>
             <!--logo start-->
-            <a href="index.html" class="logo"><b>MEDIA - System Mr.Hải</b></a>
+            <a href="index.html" class="logo"><b>MEDIA - System by Canteam</b></a>
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
             </div>
@@ -76,7 +76,7 @@
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
 
-              	  {{-- <p class="centered"><a href="profile.html"><img src="http://hblmedia.online/admin/img/Logo.png" class="img-circle" width="60"></a></p>
+              	  {{-- <p class="centered"><a href="profile.html"><img src="https://png.pngtree.com/png-vector/20210514/ourlarge/pngtree-red-wolf-logo-template-for-esport-team-png-image_3293973.jpg" class="img-circle" width="60"></a></p>
               	  <h5 class="centered">Chào Mừng Admin !</h5>--}}
 
                  <li class="mt" title="DASHBOARD">

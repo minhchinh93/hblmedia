@@ -165,11 +165,16 @@
                                           @foreach ($report->mocups as $rep)
                                           <div class="post-content-{{ $rep->id  }}">
                                             <div class="project" id="projectMocups">
+                                            <div style="display: flex;flex-direction: space-between;">
                                                 <button onclick="deleteComment({{ $rep->id }})">del</button>
-
-                                                <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadMocupURL',[$rep->id]) }}">
+                                                <h5 id="myInput1-{{$rep->id}}" onclick="myFunction1({{$rep->id}})"> <a href="#">https://cantim.s3.ap-southeast-2.amazonaws.com/{{$rep->mocup}}</a></h5>
+                                                <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadMocupURL',[$rep->id]) }}" >
+                                                        <i class="fa-solid fa-circle-down"></i>
+                                                    </a>
+                                                <!-- <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadMocupURL',[$rep->id]) }}">
                                                     <h5>{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'. $rep->mocup }} </h5>
-                                                </a>
+                                                </a> -->
+                                               </div>
                                                  {{-- <a href="{{ route('deletemocups',[$rep->id]) }}"><span onclick="deletemocups({{ $rep->id }})" class="label label-info label-mini">xoa</span></a> --}}
                                                 <div class="photo-wrapper" data-dismiss="modal">
                                                     <div onclick="photoMocups({{ $rep->id }})" >
@@ -247,10 +252,13 @@
                                                 <div style="display: flex;flex-direction: space-between;">
                                                 <button class="label label-danger label-mini" onclick="deletePng({{ $rep->id }})">del</button>
                                                 <span class="label label-info label-mini"><h5>{{ $rep->Sku}}</h5></span>
-                                                <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadURL',[$rep->id]) }}">
+                                                <!-- <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadURL',[$rep->id]) }}">
                                                     <h5> {{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImagePngDetail}}</h5>
-                                                </a>
-
+                                                </a> -->
+                                                <h5 id="myInput1-{{$rep->id}}" onclick="myFunction1({{$rep->id}})"> <a href="#">https://cantim.s3.ap-southeast-2.amazonaws.com/{{$rep->ImagePngDetail}}</a></h5>
+                                                <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadURL',[$rep->id]) }}" >
+                                                        <i class="fa-solid fa-circle-down"></i>
+                                                    </a>
                                                 </div>
 
                                                 <div class="photo-wrapper" data-dismiss="modal">
@@ -443,5 +451,25 @@ function photoPng(id) {
             return false;
         }
     };
+</script>
+<script>
+        function myFunction1(id) {
+            // Get the text field
+            var copyText = document.getElementById('myInput1-'+id);
+
+            // Select the text field
+            // copyText.select();
+
+            // copyText.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text inside the text field
+            navigator.clipboard.writeText(copyText.innerText);
+
+            document.getElementById('myInput1-'+id).style.color = "magenta";
+
+            // alert("Copied the text: " + copyText.innerText);
+// Alert the copied text
+
+}
 </script>
 @endpush
