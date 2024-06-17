@@ -58,7 +58,7 @@
                         </div>
                         <div class="col-lg-3">
                         <label class="">Sku :</label>
-                        <input type="text" name="Sku" class="form-control" required>
+                        <input type="text" name="Sku" class="form-control" >
 
                         </div>
            </div>
@@ -272,9 +272,19 @@
                                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                               </button>
+                                              <div class="modal-footer">
+                                              <form class="form-inline" action="{{ route('addmocupidea',[$report->id]) }}" method="post" enctype="multipart/form-data">
+                                                @csrf
+                                                <input name="image[]"  type="file" multiple required>
+                                              <button type="submit" class="btn btn-primary" >Add Image Idea</button>
+                                            </form>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                             </div>
+                                            </div>
+                                           
 
                                               @foreach ($report->mocups as $rep)
+                                            
                                               <div class="project-wrapper">
                                                 <h5  id="myInputs-{{$rep->id}}" onclick="myFunctions({{$rep->id}})">https://cantim.s3.ap-southeast-2.amazonaws.com/{{ $rep->mocup }} </h5>
                                                 <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadMocupURL',[$rep->id]) }}">
@@ -328,15 +338,25 @@
                                     <div class="modal fade" id="b{{$report->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                         <section id="main-content">
                                             <section class="wrapper">
+                                          
                                         <div class="modal-dialog modal-dialog-centered" role="document">
+                                        
                                           <div class="modal-content">
                                             <div class="modal-header">
+                                            <div class="modal-footer">
+                                              <form class="form-inline" action="{{ route('addPngDetailsIdea',[$report->id]) }}" method="post" enctype="multipart/form-data">
+                                                @csrf
+                                                <input name="image[]"  type="file" multiple required>
+                                              <button type="submit" class="btn btn-primary" >Add Image Idea</button>
+                                            </form>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
                                                 {{-- <a href="{{ route('dowloadPNGAll',[$report->id]) }}"><button type="button" class="btn btn-warning"><i class="fa-solid fa-cart-arrow-down"></i></button></a> --}}
                                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                               </button>
                                             </div>
-
+                                          
                                               @foreach ($report->ProductPngDetails as $rep)
                                               <div class="project-wrapper">
                                                 <div style="display: flex;flex-direction: space-between;">

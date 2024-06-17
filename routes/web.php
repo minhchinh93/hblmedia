@@ -57,15 +57,18 @@ Route::middleware(['CheckDesinger', 'veryMail'])->group(function () {
     Route::get('NotSeen', [DesignerController::class, 'NotSeen'])->name('NotSeen');
     Route::get('prioritize', [DesignerController::class, 'prioritize'])->name('prioritize');
     Route::post('componentDesigner/{id}', [DesignerController::class, 'componentDesigner'])->name('componentDesigner');
-
     Route::post('addmocups/{id}', [DesignerController::class, 'addmocups'])->name('addmocups');
+
 
     Route::get('deleteds/{id}', [DesignerController::class, 'deleteds'])->name('deleteds');
 
 });
+
+
 Route::get('dasboa', [indexController::class, 'dasboa'])->name('dasboa');
 
 Route::middleware(['CheckIdea', 'veryMail'])->group(function () {
+    Route::post('addmocupidea/{id}', [s3Controller::class, 'addmocupidea'])->name('addmocupidea');
 
     Route::get('/', [HomeController::class, 'home'])->name('home');
 
@@ -90,7 +93,7 @@ Route::middleware(['CheckIdea', 'veryMail'])->group(function () {
 
 });
 
-Route::middleware(['auth', 'veryMail'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('showTool', [toolController::class, 'showTool'])->name('showtool');
     Route::post('postTypeProduct', [toolController::class, 'postTypeProduct'])->name('postTypeProduct');
 
@@ -103,7 +106,7 @@ Route::middleware(['auth', 'veryMail'])->group(function () {
     Route::post('cornerstonedele', [toolController::class, 'cornerstonedele'])->name('cornerstonedele');
 
     Route::get('addplasform', [toolController::class, 'addplasform'])->name('addplasform');
-    Route::get('deleteplasform', [toolController::class, 'deleteplasform'])->name('deleteplasform');
+    Route::get('deleteplasform', [toolController::class, 'deleteplasform'])->name('deleteplasform'); 
 
     Route::get('showIdeaa', [toolController::class, 'showIdeaa'])->name('showIdeaa');
     Route::get('showPNGG', [toolController::class, 'showPNGG'])->name('showPNGG');

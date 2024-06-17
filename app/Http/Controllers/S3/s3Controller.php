@@ -392,5 +392,24 @@ public function addIdea(Request $request)
         // Xử lý lỗi tại đây, có thể ghi log lỗi, thông báo cho người dùng, hoặc thực hiện các hành động cần thiết khác.
         return redirect()->back()->with('error', 'Có lỗi xảy ra khi thêm ý tưởng. Vui lòng thử lại sau.');
     }
+
+}
+public function addmocupidea(Request $request, $id)
+{
+    foreach ($request->file('image') as $image) {
+        $str = $image->getClientOriginalName();
+        $filename = str_replace(' ', '-', $str);
+        
+        // Upload image to S3
+        $path = Storage::disk('s3')->put('images', $image);
+
+        $dataImage = [
+            'product_id' => $id,
+            'mocup' => $path,
+        ];
+
+        mocupProduct::create($dataImage);
+    }
+    return redirect()->back();
 }
 }
