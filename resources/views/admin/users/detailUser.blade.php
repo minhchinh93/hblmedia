@@ -105,14 +105,13 @@
                                           </form> --}}
                                 </td>
                                 <td data-toggle="modal" data-target="#a{{$report->id}}">
-                                    @if  (count($report->product_details)!=0)
-                                    @if(Storage::exists($report->product_details[0]->ImageDetail) == 1)
-                                <img src="{{'https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$report->product_details[0]->ImageDetail}}" style="width: 150px; border-radius: 5%;" >
-                                @else
-                                <img src="{{asset('/storage/'.$report->product_details[0]->ImageDetail)}}" style="width: 150px; height :150px;  border-radius: 5%;" >
-                                @endif
-                                      @endif
+                                @if(count($report->product_details)!=0)
+                                    <td data-toggle="modal" data-target="#a{{$report->id}}"><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->product_details[0]->ImageDetail}}" style="width: 150px; border-radius: 5%;" >
+                                      @else
+                                    <td data-toggle="modal" data-target="#a{{$report->id}}"></td>
+                                    @endif
                                 </td>
+                             
                                 {{-- @php
                                 $i++
                                 @endphp --}}
@@ -132,11 +131,7 @@
                                             <div class="project">
                                                 <div class="photo-wrapper">
                                                     <div class="photo">
-                                                        @if(Storage::exists($rep->ImageDetail) == 1)
-                                                        <a class="fancybox" target="_blank" href="{{'https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$rep->ImageDetail}}" alt="" ><img src="{{'https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$rep->ImageDetail}}"  width="100%"></a>
-                                                        @else
-                                                        <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->ImageDetail)}}" alt="" ><img src="{{asset('/storage/'.$rep->ImageDetail)}}"  width="100%"></a>
-                                                        @endif
+                                                    <a class="fancybox" target="_blank" href="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImageDetail}}" alt="" ><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImageDetail}}"  width="100%"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -152,14 +147,11 @@
                                   </div>
                                   @if (count($report->mocups)!=0)
                                   <td data-toggle="modal" data-target="#c{{$report->id}}">
-                                    @if(Storage::exists($report->mocups[0]->mocup) == 1)
-                                    <img src="{{'https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$report->mocups[0]->mocup}}" style="width: 150px;  border-radius: 5%;" >
-                                    @else
-                                    <img src="{{asset('/storage/'.$report->mocups[0]->mocup)}}" style="width: 150px; height :150px;  border-radius: 5%;" >
-                                 @endif
-                                    <span class="badge bg-info">{{ count($report->mocups) }}</span>
-                                    @else
-                                    <td data-toggle="modal" data-target="#c{{$report->id}}">
+                                  @if (count($report->mocups)!=0)
+                                      <td data-toggle="modal" data-target="#c{{$report->id}}"><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->mocups[0]->mocup}}" style="width: 150px;  border-radius: 5%;" ></td>
+                                        @else
+                                        <td data-toggle="modal" data-target="#c{{$report->id}}"></td>
+                                       @endif
                                 @endif
                             </td>
                                 <div class="modal fade" id="c{{$report->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -179,23 +171,11 @@
                                             <div class="project">
                                                 <a href="{{ route('deletemocups',[$rep->id]) }}"><span class="label label-info label-mini">xoa</span></a>
                                                 <h5> <a href="{{ route('dowloadMocupURL',[$rep->id]) }}">{{$rep->mocup}}</a></h5>
-                                                {{-- <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadMocupURL',[$rep->id]) }}">
-                                                    <i class="fa-solid fa-circle-down"></i>
-                                                </a> --}}
-
-                                                {{-- @if(Storage::exists($rep->mocup) == 1)
-                                                <span class="label label-default">{{ getimagesize('https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$rep->mocup)[3] ?? null }}</span>
-                                                @else
-                                                <span class="label label-default">{{ getimagesize(asset('/storage/'.$rep->mocup))[3] ?? null }}</span>
-                                                @endif --}}
+                                     
 
                                                 <div class="photo-wrapper">
                                                     <div class="photo">
-                                                        @if(Storage::exists($rep->mocup) == 1)
-                                                        <a class="fancybox" target="_blank" href="{{'https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$rep->mocup}}" alt="" ><img src="{{'https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$rep->mocup}}"  width="100%"></a>
-                                                        @else
-                                                        <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->mocup)}}" alt="" ><img src="{{asset('/storage/'.$rep->mocup)}}"  width="100%"></a>
-                                                         @endif
+                                                    <a class="fancybox" target="_blank" href="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->mocup}}" alt="" ><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->mocup}}"  width="100%"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -215,19 +195,14 @@
                                 </section>
                                   </div>
 
-                                    @if (count($report->ProductPngDetails)!=0)
+                                  
                                     <td data-toggle="modal" data-target="#b{{$report->id}}">
-                                        @if(Storage::exists($report->ProductPngDetails[0]->ImagePngDetail) == 1)
-                                        <img src="{{'https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$report->ProductPngDetails[0]->ImagePngDetail  ?? null }}" style="border-radius: 5%;width: 150px;"  >
-                                        @else
-                                        <img src="{{asset('/storage/'.$report->ProductPngDetails[0]->ImagePngDetail ) ?? null }}" style="border-radius: 5%;width: 150px; height :150px"  >
-                                    @endif
+                                        @if (count($report->ProductPngDetails)!=0)
+                                        <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->ProductPngDetails[0]->ImagePngDetail  ?? null }}" style="border-radius: 5%;width: 150px;"  >
+                                        @endif
                                     <span class="badge bg-info">{{ count($report->ProductPngDetails) }}</span>
                                 </td>
-                                    @else
-                                    <td>
-                                </td>
-                                  @endif
+                            
                                 <div class="modal fade" id="b{{$report->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <section id="main-content">
                                         <section class="wrapper">
@@ -248,18 +223,11 @@
                                                 {{-- <a class=" w-75 " style="color:rgb(59, 25, 151)" href="{{ route('dowloadMocupURL',[$rep->id]) }}">
                                                     <i class="fa-solid fa-circle-down"></i>
                                                 </a> --}}
-                                                     {{-- @if(Storage::exists($rep->ImagePngDetail) == 1)
-                                                        <span class="label label-default">{{ getimagesize('https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$rep->ImagePngDetail)[3] ?? null}}</span>
-                                                        @else
-                                                        <span class="label label-default">{{ getimagesize(asset('/storage/'.$rep->ImagePngDetail))[3] ?? null}}</span>
-                                                     @endif --}}
+                                       
                                                 <div class="photo-wrapper">
                                                     <div class="photo">
-                                                        @if(Storage::exists($rep->ImagePngDetail) == 1)
-                                                        <a class="fancybox" target="_blank" href="{{'https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$rep->ImagePngDetail}}" alt="" ><img src="{{'https://hblmedia.s3.ap-southeast-1.amazonaws.com/'.$rep->ImagePngDetail}}"  width="100%"></a>
-                                                        @else
-                                                        <a class="fancybox" target="_blank" href="{{asset('/storage/'.$rep->ImagePngDetail)}}" alt="" ><img src="{{asset('/storage/'.$rep->ImagePngDetail)}}"  width="100%"></a>
-                                                        @endif
+                                                    <a class="fancybox" target="_blank" href="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImagePngDetail}}" alt="" ><img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$rep->ImagePngDetail}}"  width="100%"></a>
+
                                                     </div>
                                                 </div>
                                             </div>

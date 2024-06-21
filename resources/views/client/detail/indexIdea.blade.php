@@ -152,11 +152,9 @@
                                       </div>
                                     <td data-toggle="modal" data-target="#b{{$report->id}}">
                                         @if (count($report->ProductPngDetails)!=0)
-                                        <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->ProductPngDetails[0]->ImagePngDetail ) ?? null }}" style="border-radius: 5%;width: 150px;"  >
+                                        <img src="{{'https://cantim.s3.ap-southeast-2.amazonaws.com/'.$report->ProductPngDetails[0]->ImagePngDetail  ?? null }}" style="border-radius: 5%;width: 150px;"  >
                                         @endif
-                                        {{-- <span type="button" class="label label-success" data-toggle="modal" data-target="#b{{$report->id}}">
-                                            xem anh designer
-                                          </span> --}}
+                                        
                                     </td>
                                     <div class="modal fade" id="b{{$report->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                         <section id="main-content">
